@@ -1,14 +1,36 @@
-print("Welcome To Texas Hold'em Poker.\n\nLet's discuss about basic rules in this game.\n1.As there are only two players, small blind and big blind are changed between players alternatively with the game.\n2. As there are only two players, one deck of cardes are used.\n3.Only positive and valid bet is accepted.\n4.You will be asked to enter the amount to play and it will act as amount for big blind.\n\nNotice:Small blind is always half of big blind.\n\nIf your ready to play \n")
+20
+import random
+import os
+
+hearts=[['A','K','Q','J',2,3,4,5,6,7,8,9,10],  #Hearts
+        ['A','K','Q','J',2,3,4,5,6,7,8,9,10],  #Aces
+        ['A','K','Q','J',2,3,4,5,6,7,8,9,10],  #Diamonds
+        ['A','K','Q','J',2,3,4,5,6,7,8,9,10]]  #Spades
+aces=hearts
+print("Welcome To Texas Hold'em Poker.\n\nLet's discuss about basic rules in this game.\n1.As there are only two players, small blind and big blind are changed between players alternatively with the game.\n2.Only positive and valid bet is accepted.\n3.You will be asked to enter the amount to play and it will act as amount for big blind.\n\nNotice:Small blind is always half of big blind.\n\nIf your ready to play \n")
+
 bet=int(input("Enter the amount you want to play for :$"))
-#insert function to randomly distribute cards for player,computer,theflop,theturn and theriver with out repetition.
-print("Computer is ready to play.\nLet's get started......\n Here are your cards")
 
-hearts=[['A','K','Q','J',2,3,4,5,6,7,8,9,10],['A','K','Q','J',2,3,4,5,6,7,8,9,10],['A','K','Q','J',2,3,4,5,6,7,8,9,10],['A','K','Q','J',2,3,4,5,6,7,8,9,10]]
-
+#p=[[0],[0]]
+#r=[[0],[0]]
+#c=[[0],[0]]
+#t=[[0],[0]]
+#f=[[0],[0]]
+call=0
+rase=0
+tb=0
+cb=bet
+count=1
+z=12
 def cards(x,y):
    if (x==0):
     print ("\t * * * * * * * * * * * * *")
-    print ("\t *",hearts[x][y],"                   *")
+    if y in range(0,3):
+      print "\t *  %c                    *"%hearts[x][y]
+    elif y in range(4,11):
+      print "\t *  %d                    *"%hearts[x][y]
+    else:
+      print "\t *  %d                   *"%hearts[x][y]
     print ("\t *      **       **      *")
     print ("\t *    ******   ******    *")
     print ("\t *    ******* *******    *")
@@ -21,8 +43,14 @@ def cards(x,y):
     print ("\t *                       *")
     print ("\t * * * * * * * * * * * * *\n")
    elif x==1:
+    
     print ("\t * * * * * * * * * * * * *")
-    print ("\t *",hearts[x][y],"                 *")
+    if y in range(0,3):
+      print "\t *  %c                    *"%hearts[x][y]
+    elif y in range(4,11):
+      print "\t *  %d                    *"%hearts[x][y]
+    else:
+      print "\t *  %d                   *"%hearts[x][y]
     print ("\t *           *           *")
     print ("\t *          ***          *")
     print ("\t *         *****         *")
@@ -36,9 +64,15 @@ def cards(x,y):
     print ("\t *       *********       *")
     print ("\t *                       *")
     print ("\t * * * * * * * * * * * * *\n")
+    
    elif (x==2):
     print ("\t * * * * * * * * * * * * *")
-    print ("\t *",hearts[x][y],"                *")
+    if y in range(0,3):
+      print "\t *  %c                    *"%hearts[x][y]
+    elif y in range(4,11):
+      print "\t *  %d                    *"%hearts[x][y]
+    else:
+      print "\t *  %d                   *"%hearts[x][y]
     print ("\t *           *           *")
     print ("\t *          ***          *")
     print ("\t *         *****         *")
@@ -51,13 +85,19 @@ def cards(x,y):
     print ("\t *                       *")
     print ("\t * * * * * * * * * * * * *\n")
    else:
+    
     print ("\t * * * * * * * * * * * * *")
-    print ("\t *",hearts[x][y],"                  *")
-    print ("\t *          **          *")
-    print ("\t *       ********       *")
-    print ("\t *       ********       *")
-    print ("\t *        ******        *")
-    print ("\t *   *****  **  *****   *")
+    if y in range(0,3):
+      print "\t *  %c                    *"%hearts[x][y]
+    elif y in range(4,11):
+      print "\t *  %d                    *"%hearts[x][y]
+    else:
+      print "\t *  %d                   *"%hearts[x][y]
+    print ("\t *          **           *")
+    print ("\t *       ********        *")
+    print ("\t *       ********        *")
+    print ("\t *        ******         *")
+    print ("\t *   *****  **  *****    *")
     print ("\t *  *******    ********  *")
     print ("\t *   *****************   *")
     print ("\t *    ***************    *")
@@ -66,7 +106,117 @@ def cards(x,y):
     print ("\t *        *****          *")
     print ("\t *      *********        *")
     print ("\t * * * * * * * * * * * * *\n")
-cards(0,2)
-cards(1,8)
-cards(2,0)
-cards(3,5)
+def pcard():
+  global z
+  for j in range(0,2):
+     x=random.randrange(0,3)
+     y=random.randrange(0,z)
+     z=z-1
+    #p[i][j]=aces[x][y]
+     cards(x,y)
+     del aces[x][y]
+def ccard():
+  global z
+  print("\nComputer cards are:\n")
+  for j in range(0,2):
+    x=random.randrange(0,3)
+    y=random.randrange(0,z)
+    #c[i][j]=aces[x][y]
+    print(x,y,aces[x][y])
+    z=z-1
+    cards(x,y)
+    del aces[x][y]
+def fcard():
+  global z,count
+  count=1
+  count=count+1
+  print("\n The Flop is:\n")
+  for j in range(0,3):
+    x=random.randrange(0,3)
+    y=random.randrange(0,z)
+    #f[i][j]=aces[x][y]
+    print(x,y,aces[x][y])
+    z=z-1
+    cards(x,y)
+    del aces[x][y]
+def rcard():
+  global z,count
+  count=2
+  count=count+1
+  print("\nThe River is:\n")
+  for j in range(0,1):
+    x=random.randrange(0,2)
+    y=random.randrange(0,12)
+    #r[i][j]=aces[x][y]
+    print(x,y,aces[x][y])
+    z=z-1
+    cards(x,y)
+    del aces[x][y]
+def tcard():
+  global z,count
+  count=3
+  count=count+1
+  print("\nThe Turn is:\n")
+  for j in range(0,1):
+    x=random.randrange(0,3)
+    y=random.randrange(0,12)
+    #t[i][j]=aces[x][y]
+    print(x,y,aces[x][y])
+    z=z-1
+    cards(x,y)
+    del aces[x][y]
+def final():
+  print("Give me some more time")
+def next():
+  global tb,stake,cb,bet,count
+  choice=int(input("Press 1 for call\t2 for fold\t3 for raise"))
+  if choice==1:
+    stake=tb+bet+cb
+    tb=stake
+    print("Total Stake is: "+str(stake))
+    os.system('clear')
+    if count==1:
+      fcard()
+      next()
+    elif count==2:
+      rcard()
+      next()
+    elif count==3:
+      tcard()
+      next()
+      count=4
+    else:
+      final()
+  elif choice==3:
+    rase=int(input("Enter amount you want to raise: "))
+    cb=rase
+    stake=tb+rase+cb+bet*2
+    tb=stake
+    print("Total Stake is: ",stake)
+    os.system('clear')
+    if count==1:
+      fcard()
+      next()
+    elif count==2:
+      rcard()
+      next()
+    elif count==3:
+      tcard()
+      next()
+    else:
+      final()
+  elif choice==2:
+    #stake=stake+bet
+    #print("Total Stake is: ",stake)
+    os.system('clear')
+    print("COmputer Wins!!!!")
+  else:
+    print("Not a valid Entry!!")
+    next()
+
+
+
+
+print("Computer is ready to play.\nLet's get started......\n Here are your cards")
+pcard()
+next()
