@@ -1,138 +1,321 @@
-print("Welcome To Texas Hold'em Poker.\n\nLet's discuss about basic rules in this game.\n1.As there are only two players, small blind and big blind are changed between players alternatively with the game.\n2.Only positive and valid bet is accepted.\n3.You will be asked to enter the amount to play and it will act as amount for big blind.\n\nNotice:Small blind is always half of big blind.\n\nIf your ready to play \n")
-bet=int(input("Enter the amount you want to play for :$"))
-#insert function to randomly distribute cards for player,computer,theflop,theturn and theriver with out repetition.
-print("Computer is ready to play.\nLet's get started......\n Here are your cards")
+import random
+import os
 
-hearts=[['A','K','Q','J',2,3,4,5,6,7,8,9,10],['A','K','Q','J',2,3,4,5,6,7,8,9,10],['A','K','Q','J',2,3,4,5,6,7,8,9,10],['A','K','Q','J',2,3,4,5,6,7,8,9,10]]
-for x in range(0,4):
-  for y in range(0,13):
-   if (x==0 & y==12):
-    print ("\t * * * * * * * * * * * * *")
-    print ("\t *",hearts[x][y],"                   *")
-    print ("\t *      **       **      *")
-    print ("\t *    ******   ******    *")
-    print ("\t *    ******* *******    *")
-    print ("\t *    ***************    *")
-    print ("\t *     *************     *")
-    print ("\t *       *********       *")
-    print ("\t *         *****         *")
-    print ("\t *          ***          *")
-    print ("\t *           *           *")
-    print ("\t *                       *")
-    print ("\t * * * * * * * * * * * * *\n")
-   else:
-    print ("\t * * * * * * * * * * * * *")
-    print ("\t *",hearts[x][y],"                    *")
-    print ("\t *      **       **      *")
-    print ("\t *    ******   ******    *")
-    print ("\t *    ******* *******    *")
-    print ("\t *    ***************    *")
-    print ("\t *     *************     *")
-    print ("\t *       *********       *")
-    print ("\t *         *****         *")
-    print ("\t *          ***          *")
-    print ("\t *           *           *")
-    print ("\t *                       *")
-    print ("\t * * * * * * * * * * * * *\n")
-    break
-  
-   if (x==1 & y==12):
-    print ("\t * * * * * * * * * * * * *")
-    print ("\t *",hearts[x][y],"                 *")
-    print ("\t *           *           *")
-    print ("\t *          ***          *")
-    print ("\t *         *****         *")
-    print ("\t *       *********       *")
-    print ("\t *     *************     *")
-    print ("\t *    ***************    *")
-    print ("\t *    ******* *******    *")
-    print ("\t *    ****** * ******    *")
-    print ("\t *          ***          *")
-    print ("\t *         *****         *")
-    print ("\t *       *********       *")
-    print ("\t *                       *")
-    print ("\t * * * * * * * * * * * * *\n")
+deck=[['A','K','Q','J',2,3,4,5,6,7,8,9,10],  #hearts
+      ['A','K','Q','J',2,3,4,5,6,7,8,9,10],  #Aces
+      ['A','K','Q','J',2,3,4,5,6,7,8,9,10],  #Diamonds
+      ['A','K','Q','J',2,3,4,5,6,7,8,9,10]]  #Spades
+      
+#write fucntion for shuffling the cards
+aces=deck
+print("Welcome To Texas Hold'em Poker.\n\nLet's discuss about basic rules in this game.\n1.As there are only two players, small blind and big blind are changed between players alternatively with the game.\n2.Only positive and valid bet is accepted.\n3.You will be asked to enter the amount to play and it will act as amount for big blind.\n\nNotice:Small blind is always half of big blind.\n\nIf your ready to play \n")
+
+bet=int(input("Enter the amount you want to play for :$"))
+w=[[0,0],
+   [0,0],
+   [0,0],
+   [0,0],
+   [0,0],
+   [0,0],
+   [0,0],
+   [0,0],
+   [0,0]]
+call=0
+rase=0
+tb=0
+
+cb=bet
+count=1
+z=13
+player_hand =[]
+computer_hand = []
+middle_hand = []
+flop_hand = []
+river_hand = []
+turn_hand = []
+show_hand = []
+def cards(x,y):
+   if (x==0):
+    print ("\t * * * * * * *")
+    if y in range(0,12):
+      print "\t *  %s        *"%str(deck[x][y])
+    else:
+      print "\t *  %s      *"%str(deck[x][y])
+    print ("\t *  **   **  *")
+    print ("\t *  *******  *")
+    print ("\t *  *******  *")
+    print ("\t *   *****   *")
+    print ("\t *    ***    *")
+    print ("\t *     *     *")
+    print ("\t *           *")
+    print ("\t * * * * * * *\n")
+    
+   elif x==1:
+    print ("\t * * * * * * *")
+    if y in range(0,12):
+      print "\t *  %s        *"%str(deck[x][y])
+    else:
+      print "\t *  %s      *"%str(deck[x][y])
+    print ("\t *     *     *")
+    print ("\t *    ***    *")
+    print ("\t *   *****   *")
+    print ("\t *  *******  *")
+    print ("\t *  *** ***  *")
+    print ("\t *     *     *")
+    print ("\t *    ***    *")
+    print ("\t *   *****   *")
+    print ("\t *           *")
+    print ("\t * * * * * * *\n")
+    
+   elif (x==2):
+    print ("\t * * * * * * *")
+    if y in range(0,12):
+      print "\t *  %s        *"%str(deck[x][y])
+    else:
+      print "\t *  %s      *"%str(deck[x][y])
+    print ("\t *     *     *")
+    print ("\t *    ***    *")
+    print ("\t *   *****   *")
+    print ("\t *    ***    *")
+    print ("\t *     *     *")
+    print ("\t *           *")
+    print ("\t * * * * * * *\n")
     
    else:
-    print ("\t * * * * * * * * * * * * *")
-    print ("\t *",hearts[x][y],"                    *")
-    print ("\t *           *           *")
-    print ("\t *          ***          *")
-    print ("\t *         *****         *")
-    print ("\t *       *********       *")
-    print ("\t *     *************     *")
-    print ("\t *    ***************    *")
-    print ("\t *    ******* *******    *")
-    print ("\t *    ****** * ******    *")
-    print ("\t *          ***          *")
-    print ("\t *         *****         *")
-    print ("\t *       *********       *")
-    print ("\t *                       *")
-    print ("\t * * * * * * * * * * * * *\n")
-    break
-  
-   if (x==2 & y==12):
-    print ("\t * * * * * * * * * * * * *")
-    print ("\t *",hearts[x][y],"                *")
-    print ("\t *           *           *")
-    print ("\t *          ***          *")
-    print ("\t *         *****         *")
-    print ("\t *        *******        *")
-    print ("\t *       *********       *")
-    print ("\t *        *******        *")
-    print ("\t *         *****         *")
-    print ("\t *          ***          *")
-    print ("\t *           *           *")
-    print ("\t *                       *")
-    print ("\t * * * * * * * * * * * * *\n")
+    print ("\t * * * * * * *")
+    if y in range(0,12):
+      print "\t *  %s        *"%str(deck[x][y])
+    else:
+      print "\t *  %s     *"%str(deck[x][y])
+    print ("\t *     *     *")
+    print ("\t *    ***    *")
+    print ("\t *  ** * **  *")
+    print ("\t * **** **** *")
+    print ("\t *  *******  *")
+    print ("\t *     *     *")
+    print ("\t *    ***    *")
+    print ("\t * * * * * * *\n")
+def pcard():
+  global z, player_hand,p
+  for i in range(0,1):
+    for j in range(0,2):
+     x=random.randrange(0,4)
+     y=random.randrange(0,z)
+     z=z-1
+     cards(x,y)
+     card_value = str( aces[x][y] )
+     if j==0:
+       if( x == 0 ):
+         w[0][0]="H"
+       elif( x == 1 ):
+         w[0][0]= "S"
+       elif( x == 2 ):
+         w[0][0]= "D"
+       elif( x == 3 ):
+         w[0][0]= "C"
+       else:
+         print "X HAS WRONG VALUE!"
+       w[0][1]=card_value
+     else:
+       if( x == 0 ):
+         w[1][0]="H"
+       elif( x == 1 ):
+         w[1][0]= "S"
+       elif( x == 2 ):
+         w[1][0]= "D"
+       elif( x == 3 ):
+         w[1][0]= "C"
+       else:
+         print "X HAS WRONG VALUE!"
+       w[1][1]=card_value
+     del aces[x][y]
+def ccard():
+  global z
+  print("\nComputer cards are:\n")
+  for j in range(0,2):
+    x=random.randrange(0,4)
+    y=random.randrange(0,z)
+    z=z-1
+    cards(x,y)
+    card_value = str( aces[x][y] )
+    if j==0:
+       if( x == 0 ):
+         w[2][0]="H"
+       elif( x == 1 ):
+         w[2][0]= "S"
+       elif( x == 2 ):
+         w[2][0]= "D"
+       elif( x == 3 ):
+         w[2][0]= "C"
+       else:
+         print "X HAS WRONG VALUE!"
+       w[2][1]=card_value
+    else:
+       if( x == 0 ):
+         w[3][0]="H"
+       elif( x == 1 ):
+         w[3][0]= "S"
+       elif( x == 2 ):
+         w[3][0]= "D"
+       elif( x == 3 ):
+         w[3][0]= "C"
+       else:
+         print "X HAS WRONG VALUE!"
+       w[3][1]=card_value
+    del aces[x][y]
+def fcard():
+  global z,count,flop_hand
+  count=1
+  count=count+1
+  print("\n The Flop is:\n")
+  for j in range(0,3):
+    x=random.randrange(0,4)
+    y=random.randrange(0,z)
+    z=z-1
+    cards(x,y)
+    card_value = str( aces[x][y] )
+    if j==0:
+       if( x == 0 ):
+         w[4][0]="H"
+       elif( x == 1 ):
+         w[4][0]= "S"
+       elif( x == 2 ):
+         w[4][0]= "D"
+       elif( x == 3 ):
+         w[4][0]= "C"
+       else:
+         print "X HAS WRONG VALUE!"
+       w[4][1]=card_value
+    elif j==1:
+       if( x == 0 ):
+         w[5][0]="H"
+       elif( x == 1 ):
+         w[5][0]= "S"
+       elif( x == 2 ):
+         w[5][0]= "D"
+       elif( x == 3 ):
+         w[5][0]= "C"
+       else:
+         print "X HAS WRONG VALUE!"
+       w[5][1]=card_value
+    else:
+       if( x == 0 ):
+         w[6][0]="H"
+       elif( x == 1 ):
+         w[6][0]= "S"
+       elif( x == 2 ):
+         w[6][0]= "D"
+       elif( x == 3 ):
+         w[6][0]= "C"
+       else:
+         print "X HAS WRONG VALUE!"
+       w[6][1]=card_value
+    del aces[x][y]
+def rcard():
+  global z,count,river_hand
+  count=count+1
+  print("\nThe River is:\n")
+  for j in range(0,1):
+    x=random.randrange(0,4)
+    y=random.randrange(0,z)
+    z=z-1
+    cards(x,y)
+    card_value = str( aces[x][y] )
+    if( x == 0 ):
+         w[7][0]="H"
+    elif( x == 1 ):
+         w[7][0]= "S"
+    elif( x == 2 ):
+         w[7][0]= "D"
+    elif( x == 3 ):
+         w[7][0]= "C"
+    else:
+         print "X HAS WRONG VALUE!"
+    w[7][1]=card_value
+    del aces[x][y]
+def tcard():
+  global z,count,turn_hand
+  count=count+1
+  print("\nThe Turn is:\n")
+  for j in range(0,1):
+    x=random.randrange(0,4)
+    y=random.randrange(0,z)
+    z=z-1
+    cards(x,y)
+    card_value = str( aces[x][y] )
+    if( x == 0 ):
+         w[8][0]="H"
+    elif( x == 1 ):
+         w[8][0]= "S"
+    elif( x == 2 ):
+         w[8][0]= "D"
+    elif( x == 3 ):
+         w[8][0]= "C"
+    else:
+         print "X HAS WRONG VALUE!"
+    w[3][1]=card_value
+    del aces[x][y]
     
-   else:
-    print ("\t * * * * * * * * * * * * *")
-    print ("\t *",hearts[x][y],"                    *")
-    print ("\t *           *           *")
-    print ("\t *          ***          *")
-    print ("\t *         *****         *")
-    print ("\t *        *******        *")
-    print ("\t *       *********       *")
-    print ("\t *        *******        *")
-    print ("\t *         *****         *")
-    print ("\t *          ***          *")
-    print ("\t *           *           *")
-    print ("\t *                       *")
-    print ("\t * * * * * * * * * * * * *\n")
-    break
-  
-   if (x==3 & y==12):
-    print ("\t * * * * * * * * * * * * *")
-    print ("\t *",hearts[x][y],"                  *")
-    print ("\t *          **           *")
-    print ("\t *       ********        *")
-    print ("\t *       ********        *")
-    print ("\t *        ******         *")
-    print ("\t *   *****  **  *****    *")
-    print ("\t *  ********   ********  *")
-    print ("\t *   *****************   *")
-    print ("\t *    ***************    *")
-    print ("\t *     **** * ****       *")
-    print ("\t *         ***           *")
-    print ("\t *        *****          *")
-    print ("\t *      *********        *")
-    print ("\t * * * * * * * * * * * * *\n")
+def determine_hand( w ):
+  if w[0][0] == "" and w[0][1] == "" and w[1][0] == "" and w[1][1] == ""
     
-   else:
-    print ("\t * * * * * * * * * * * * *")
-    print ("\t *",hearts[x][y],"                    *")
-    print ("\t *          **           *")
-    print ("\t *       ********        *")
-    print ("\t *       ********        *")
-    print ("\t *        ******         *")
-    print ("\t *   *****  **  *****    *")
-    print ("\t *  ********   ********  *")
-    print ("\t *   *****************   *")
-    print ("\t *    ***************    *")
-    print ("\t *     **** * ****       *")
-    print ("\t *         ***           *")
-    print ("\t *        *****          *")
-    print ("\t *      *********        *")
-    print ("\t * * * * * * * * * * * * *\n")
-    break
+def final():
+  global w
+  print "PLAYERS HAND:"
+  print w
+  print "COMPUTER HAND:"
+  print computer_hand
+  show=flop_hand+river_hand+turn_hand
+  show_hand.append(show)
+  print "Cards on table are: "
+  print show_hand
+def next():
+  global tb,stake,cb,bet,count
+  choice=int(input("Press 1 for call\t2 for fold\t3 for raise"))
+  if choice==1:
+    stake=tb+bet+cb
+    tb=stake
+    print("Total Stake is: "+str(stake))
+    os.system('clear')
+    if count==1:
+      fcard()
+      next()
+    elif count==2:
+      rcard()
+      next()
+    elif count==3:
+      tcard()
+      next()
+      count=4
+    else:
+      final()
+  elif choice==3:
+    rase=int(input("Enter amount you want to raise: "))
+    cb=rase
+    stake=tb+rase+cb+bet*2
+    tb=stake
+    print("Total Stake is: ",stake)
+    os.system('clear')
+    if count==1:
+      fcard()
+      next()
+    elif count==2:
+      rcard()
+      next()
+    elif count==3:
+      tcard()
+      next()
+    else:
+      final()
+  elif choice==2:
+    #stake=stake+bet
+    #print("Total Stake is: ",stake)
+    os.system('clear')
+    print("COmputer Wins!!!!")
+  else:
+    print("Not a valid Entry!!")
+    next()
+print("Computer is ready to play.\nLet's get started......\n Here are your cards")
+pcard()
+ccard()
+next()
