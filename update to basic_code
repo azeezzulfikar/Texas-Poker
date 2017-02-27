@@ -2,7 +2,7 @@
 import random
 import os
 
-deck=[['A','K','Q','J',2,3,4,5,6,7,8,9,10],  #deck
+deck=[['A','K','Q','J',2,3,4,5,6,7,8,9,10],  #Hearts
         ['A','K','Q','J',2,3,4,5,6,7,8,9,10],  #Aces
         ['A','K','Q','J',2,3,4,5,6,7,8,9,10],  #Diamonds
         ['A','K','Q','J',2,3,4,5,6,7,8,9,10]]  #Spades
@@ -11,20 +11,25 @@ print("Welcome To Texas Hold'em Poker.\n\nLet's discuss about basic rules in thi
 
 bet=int(input("Enter the amount you want to play for :$"))
 
-#p=[[0],[0]]
-#r=[[0],[0]]
-#c=[[0],[0]]
-#t=[[0],[0]]
-#f=[[0],[0]]
-call=0
-rase=0
-tb=0
-cb=bet
-count=1
-z=12
-player_hand =[]
-computer_hand = []
-middle_hand = []
+call=0                   #Used to store call value If player calls the bet
+rase=0                   #Used to store raise value of player if bet raised
+tb=0                     #represents total bet
+cb=bet                   #represents computer bet
+count=1                  #count value represents whether game is till fold or river or turn
+z=13                     #represents number of cards and used to choose random value
+player_hand =[]          #represents cards of player and cards on the table
+computer_hand = []       #represents cards of computer and cards on the table
+class types(object):
+  list_flush=[]
+  list_straight=[]
+  list_fkind=[]
+  list_fullhouse=[]
+  list_threekind=[]
+  list_twopair=[]
+  list_onepair=[]  #player and computer will have share same variables. So created class and                         objects for player and computer
+p=types()                #Player object
+c=types()                #Computer Object
+
 def cards(x,y):
   
    if (x==0):
@@ -106,10 +111,9 @@ def cards(x,y):
 def pcard():
   global z, player_hand
   for j in range(0,2):
-     x=random.randrange(0,3)
+     x=random.randrange(0,4)
      y=random.randrange(0,z)
      z=z-1
-    #p[i][j]=aces[x][y]
      cards(x,y)
      card_value = str( aces[x][y] )
      card_suite = ""
@@ -127,15 +131,12 @@ def pcard():
      full_card = card_value + card_suite
      player_hand.append( full_card )
      del aces[x][y]
-
 def ccard():
   global z
   print("\nComputer cards are:\n")
   for j in range(0,2):
-    x=random.randrange(0,3)
+    x=random.randrange(0,4)
     y=random.randrange(0,z)
-    #c[i][j]=aces[x][y]
-    print(x,y,aces[x][y])
     z=z-1
     cards(x,y)
     card_value = str( aces[x][y] )
@@ -160,40 +161,78 @@ def fcard():
   count=count+1
   print("\n The Flop is:\n")
   for j in range(0,3):
-    x=random.randrange(0,3)
+    x=random.randrange(0,4)
     y=random.randrange(0,z)
-    #f[i][j]=aces[x][y]
-    print(x,y,aces[x][y])
     z=z-1
     cards(x,y)
+    card_value = str( aces[x][y] )
+    card_suite = ""
+    full_card = ""
+    if( x == 0 ):
+         card_suite = "H"
+    elif( x == 1 ):
+         card_suite = "S"
+    elif( x == 2 ):
+         card_suite = "D"
+    elif( x == 3 ):
+         card_suite = "C"
+    else:
+       print "X HAS WRONG VALUE!"
+    full_card = card_value + card_suite
+    player_hand.append( full_card )
+    computer_hand.append( full_card )
     del aces[x][y]
 def rcard():
   global z,count
-  count=2
   count=count+1
   print("\nThe River is:\n")
   for j in range(0,1):
-    x=random.randrange(0,2)
+    x=random.randrange(0,4)
     y=random.randrange(0,z)
     z=z-1
-    #r[i][j]=aces[x][y]
-    print(x,y,aces[x][y])
-    z=z-1
     cards(x,y)
+    card_value = str( aces[x][y] )
+    card_suite = ""
+    full_card = ""
+    if( x == 0 ):
+         card_suite = "H"
+    elif( x == 1 ):
+         card_suite = "S"
+    elif( x == 2 ):
+         card_suite = "D"
+    elif( x == 3 ):
+         card_suite = "C"
+    else:
+       print "X HAS WRONG VALUE!"
+    full_card = card_value + card_suite
+    player_hand.append( full_card )
+    computer_hand.append( full_card )
     del aces[x][y]
 def tcard():
   global z,count
-  count=3
   count=count+1
   print("\nThe Turn is:\n")
   for j in range(0,1):
-    x=random.randrange(0,3)
+    x=random.randrange(0,4)
     y=random.randrange(0,z)
-    z
-    #t[i][j]=aces[x][y]
-    print(x,y,aces[x][y])
     z=z-1
     cards(x,y)
+    card_value = str( aces[x][y] )
+    card_suite = ""
+    full_card = ""
+    if( x == 0 ):
+         card_suite = "H"
+    elif( x == 1 ):
+         card_suite = "S"
+    elif( x == 2 ):
+         card_suite = "D"
+    elif( x == 3 ):
+         card_suite = "C"
+    else:
+       print "X HAS WRONG VALUE!"
+    full_card = card_value + card_suite
+    player_hand.append( full_card )
+    computer_hand.append( full_card )
     del aces[x][y]
 def final():
   global player_hand
@@ -247,11 +286,30 @@ def next():
   else:
     print("Not a valid Entry!!")
     next()
+def winner():
+  r_flush();
+  if royal_flush==3:
+    s_flush();
+    if straight_flush==3:
+      f_kind();
+    if fkind==3:
+      f_house();
+    if full_house==3:
+      flush();
+    if ssymbol==3:
+      straight();
+    if sequence==3:
+      t_kind();
+    if threekind==3:
+      t_pair();
+    if twopair==3:
+      o_pair();
+    else:
+      h_card();
 
-
-
+def r_flush():
 
 print("Computer is ready to play.\nLet's get started......\n Here are your cards")
 pcard()
-ccard()12
+ccard()
 next()
