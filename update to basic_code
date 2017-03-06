@@ -1,12 +1,13 @@
 
 import random
 import os
+deck=[[2,3,4,5,6,7,8,9,10,11,12,13,14],  #Hearts
+      [2,3,4,5,6,7,8,9,10,11,12,13,14],  #Aces
+      [2,3,4,5,6,7,8,9,10,11,12,13,14],  #Diamonds
+      [2,3,4,5,6,7,8,9,10,11,12,13,14]]  #Spades
 
-deck=[['A','K','Q','J',2,3,4,5,6,7,8,9,10],  #Hearts
-        ['A','K','Q','J',2,3,4,5,6,7,8,9,10],  #Aces
-        ['A','K','Q','J',2,3,4,5,6,7,8,9,10],  #Diamonds
-        ['A','K','Q','J',2,3,4,5,6,7,8,9,10]]  #Spades
 aces=deck
+
 print("Welcome To Texas Hold'em Poker.\n\nLet's discuss about basic rules in this game.\n1.As there are only two players, small blind and big blind are changed between players alternatively with the game.\n2.Only positive and valid bet is accepted.\n3.You will be asked to enter the amount to play and it will act as amount for big blind.\n\nNotice:Small blind is always half of big blind.\n\nIf your ready to play \n")
 
 bet=int(input("Enter the amount you want to play for :$"))
@@ -15,101 +16,114 @@ call=0                   #Used to store call value If player calls the bet
 rase=0                   #Used to store raise value of player if bet raised
 tb=0                     #represents total bet
 cb=bet                   #represents computer bet
-count=1                  #count value represents whether game is till fold or river or turn
-z=13                     #represents number of cards and used to choose random value
+count=1                  #count value represents whether game is till fold or                             river or turn
+z=13                     #represents number of cards and used to choose random v V                         Value
+stake=cb+bet
 player_hand =[]          #represents cards of player and cards on the table
 computer_hand = []       #represents cards of computer and cards on the table
-class types(object):
-  list_flush=[]
-  list_straight=[]
-  list_fkind=[]
-  list_fullhouse=[]
-  list_threekind=[]
-  list_twopair=[]
-  list_onepair=[]  #player and computer will have share same variables. So created class and                         objects for player and computer
-p=types()                #Player object
-c=types()                #Computer Object
+p_kicker=[]
+p_list_flush=[]
+p_list_straight=[]
+p_list_fkind=[]
+p_list_fullhouse=[]
+p_list_threekind=[]
+p_list_twopair=[]
+p_list_onepair=[]        #player and computer will have share same variables. So created class and                         objects for player and computer
+p_h_flush=[]
+p_s_flush=[]
+p_d_flush=[]
+p_c_flush=[]
+p_f_kind=[]
+p_s_kind=[]
+p_t_kind=[]
+p_fo_kind=[]
 
+rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk,pfh,cfh=0,0,0,0,0,0,0,0,0,0,0,0
+
+
+
+c_kicker=[]
+c_list_flush=[]
+c_list_straight=[]
+c_list_fkind=[]
+c_list_fullhouse=[]
+c_list_threekind=[]
+c_list_twopair=[]
+c_list_onepair=[]        #player and computer will have share same variables. So created class and                       objects for player and computer
+c_h_flush=[]
+c_s_flush=[]
+c_d_flush=[]
+c_c_flush=[]
+c_f_kind=[]
+c_s_kind=[]
+c_t_kind=[]
+c_fo_kind=[]
+
+ssymbol=0
+sequence=0
 def cards(x,y):
-  
    if (x==0):
-    print ("\t * * * * * * * * * * * * *")
-    if y in range(0,12):
-      print "\t *  %s                    *"%str(deck[x][y])
+    print ("\t * * * * * * *")
+    if y in range(0,9):
+      print "\t *  %s        *"%str(deck[x][y])
     else:
-      print "\t *  %s                   *"%str(deck[x][y])
-    print ("\t *      **       **      *")
-    print ("\t *    ******   ******    *")
-    print ("\t *    ******* *******    *")
-    print ("\t *    ***************    *")
-    print ("\t *     *************     *")
-    print ("\t *       *********       *")
-    print ("\t *         *****         *")
-    print ("\t *          ***          *")
-    print ("\t *           *           *")
-    print ("\t *                       *")
-    print ("\t * * * * * * * * * * * * *\n")
-   elif x==1:
+      print "\t *  %s       *"%str(deck[x][y])
+    print ("\t *  **   **  *")
+    print ("\t *  *******  *")
+    print ("\t *  *******  *")
+    print ("\t *   *****   *")
+    print ("\t *    ***    *")
+    print ("\t *     *     *")
+    print ("\t *           *")
+    print ("\t * * * * * * *\n")
     
-    print ("\t * * * * * * * * * * * * *")
-    if y in range(0,12):
-      print "\t *  %s                    *"% str( deck[x][y] )
+   elif x==1:
+    print ("\t * * * * * * *")
+    if y in range(0,9):
+      print "\t *  %s        *"%str(deck[x][y])
     else:
-      print "\t *  %s                   *"% str( deck[x][y] )
-    print ("\t *           *           *")
-    print ("\t *          ***          *")
-    print ("\t *         *****         *")
-    print ("\t *       *********       *")
-    print ("\t *     *************     *")
-    print ("\t *    ***************    *")
-    print ("\t *    ******* *******    *")
-    print ("\t *    ****** * ******    *")
-    print ("\t *          ***          *")
-    print ("\t *         *****         *")
-    print ("\t *       *********       *")
-    print ("\t *                       *")
-    print ("\t * * * * * * * * * * * * *\n")
+      print "\t *  %s       *"%str(deck[x][y])
+    print ("\t *     *     *")
+    print ("\t *    ***    *")
+    print ("\t *   *****   *")
+    print ("\t *  *******  *")
+    print ("\t *  *** ***  *")
+    print ("\t *     *     *")
+    print ("\t *    ***    *")
+    print ("\t *   *****   *")
+    print ("\t *           *")
+    print ("\t * * * * * * *\n")
     
    elif (x==2):
-    print ("\t * * * * * * * * * * * * *")
-    if y in range(0,12):
-      print "\t *  %s                    *"% str( deck[x][y] )
+    print ("\t * * * * * * *")
+    if y in range(0,9):
+      print "\t *  %s        *"%str(deck[x][y])
     else:
-      print ("\t *  %s                   *"%str(deck[x][y]))
-      
-    print ("\t *           *           *")
-    print ("\t *          ***          *")
-    print ("\t *         *****         *")
-    print ("\t *        *******        *")
-    print ("\t *       *********       *")
-    print ("\t *        *******        *")
-    print ("\t *         *****         *")
-    print ("\t *          ***          *")
-    print ("\t *           *           *")
-    print ("\t *                       *")
-    print ("\t * * * * * * * * * * * * *\n")
-   else:
+      print "\t *  %s       *"%str(deck[x][y])
+    print ("\t *     *     *")
+    print ("\t *    ***    *")
+    print ("\t *   *****   *")
+    print ("\t *    ***    *")
+    print ("\t *     *     *")
+    print ("\t *           *")
+    print ("\t * * * * * * *\n")
     
-    print ("\t * * * * * * * * * * * * *")
-    if y in range(0,12):
-      print "\t *  %s                    *"% str( deck[x][y] )
+   else:
+    print ("\t * * * * * * *")
+    if y in range(0,9):
+      print "\t *  %s        *"%str(deck[x][y])
     else:
-      print "\t *  %s                   *"%str(deck[x][y])
-    print ("\t *          **           *")
-    print ("\t *       ********        *")
-    print ("\t *       ********        *")
-    print ("\t *        ******         *")
-    print ("\t *   *****  **  *****    *")
-    print ("\t *  *******    ********  *")
-    print ("\t *   *****************   *")
-    print ("\t *    ***************    *")
-    print ("\t *     **** * ****       *")
-    print ("\t *         ***           *")
-    print ("\t *        *****          *")
-    print ("\t *      *********        *")
-    print ("\t * * * * * * * * * * * * *\n")
+      print "\t *  %s       *"%str(deck[x][y])
+    print ("\t *     *     *")
+    print ("\t *    ***    *")
+    print ("\t *  ** * **  *")
+    print ("\t * **** **** *")
+    print ("\t *  *******  *")
+    print ("\t *     *     *")
+    print ("\t *    ***    *")
+    print ("\t * * * * * * *\n")
 def pcard():
-  global z, player_hand
+  global z, player_hand,p_kicker
   for j in range(0,2):
      x=random.randrange(0,4)
      y=random.randrange(0,z)
@@ -129,10 +143,13 @@ def pcard():
      else:
          print "X HAS WRONG VALUE!"
      full_card = card_value + card_suite
+     p_list_flush.append(card_suite)
+     p_list_straight.append(card_value)
      player_hand.append( full_card )
      del aces[x][y]
+  p_kicker=max(p_list_straight)
 def ccard():
-  global z
+  global z,c_kicker
   print("\nComputer cards are:\n")
   for j in range(0,2):
     x=random.randrange(0,4)
@@ -154,7 +171,10 @@ def ccard():
       print "X HAS WRONG VALUE!"
     full_card = card_value + card_suite
     computer_hand.append( full_card )
+    c_list_flush.append(card_suite)
+    c_list_straight.append(card_value)
     del aces[x][y]
+  c_kicker=max(c_list_straight)
 def fcard():
   global z,count
   count=1
@@ -179,6 +199,10 @@ def fcard():
     else:
        print "X HAS WRONG VALUE!"
     full_card = card_value + card_suite
+    p_list_flush.append(card_suite)
+    c_list_flush.append(card_suite)
+    p_list_straight.append(card_value)
+    c_list_straight.append(card_value)
     player_hand.append( full_card )
     computer_hand.append( full_card )
     del aces[x][y]
@@ -205,6 +229,10 @@ def rcard():
     else:
        print "X HAS WRONG VALUE!"
     full_card = card_value + card_suite
+    p_list_flush.append(card_suite)
+    c_list_flush.append(card_suite)
+    p_list_straight.append(card_value)
+    c_list_straight.append(card_value)
     player_hand.append( full_card )
     computer_hand.append( full_card )
     del aces[x][y]
@@ -231,32 +259,91 @@ def tcard():
     else:
        print "X HAS WRONG VALUE!"
     full_card = card_value + card_suite
+    p_list_flush.append(card_suite)
+    c_list_flush.append(card_suite)
+    p_list_straight.append(card_value)
+    c_list_straight.append(card_value)    
     player_hand.append( full_card )
     computer_hand.append( full_card )
     del aces[x][y]
-def final():
-  global player_hand
-  print "PLAYERS HAND:"
-  print player_hand
-  print "COMPUTER HAND:"
-  print computer_hand
-def next():
+def NumericSort(alist): 
+    alist=[int(x) for x in alist]
+    alist.sort()
+def kind():
+  global rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk,pfh,cfh
+  if len(p_list_onepair)!=0:
+    if len(p_list_threekind)!=0:
+      pfh=1
+      p_list_fullhouse.append(p_list_threekind)
+      p_list_fullhouse.append(p_list_onepair)
+    elif len(p_list_onepair)>1:  
+      p_list_twopair.append(p_list_onepair)
+      pop=2
+    else:
+      pop=1
+  elif len(p_list_threekind)!=0:
+    if len(p_list_onepair)!=0:
+      pfh=1
+      p_list_fullhouse.append(p_list_threekind)
+      p_list_fullhouse.append(p_list_onepair)
+    else:
+      ptk=1
+  elif len(p_list_fkind)!=0:
+    pfk=1
+    
+    
+  if len(c_list_onepair)!=0:
+    if len(c_list_threekind)!=0:
+      cfh=1
+      c_list_fullhouse.append(c_list_onepair)
+      c_list_fullhouse.append(c_list_threekind)
+    elif len(c_list_onepair)>1:
+      cop=2
+      c_list_twopair.append(c_list_onepair)
+    else:
+      cop=1
+  elif len(c_list_threekind)!=0:
+    if len(c_list_onepair)!=0:
+      c_list_fullhouse.append(c_list_onepair)
+      c_list_fullhouse.append(c_list_threekind)
+      cfh=1
+    else:
+      ctk=1
+  elif len(c_list_fkind)!=0:
+    tfk=1
+def next1():
   global tb,stake,cb,bet,count
-  choice=int(input("Press 1 for call\t2 for fold\t3 for raise"))
-  if choice==1:
+  choice=int(input("Press  0 for check 1 for call\t2 for fold\t3 for raise"))
+  if choice==0:
+    stake=stake
+    print("Total Stake is: "+str(stake))
+    os.system('clear')
+    if count==1:
+      fcard()
+      next1()
+    elif count==2:
+      rcard()
+      next1()
+    elif count==3:
+      tcard()
+      next1()
+      count=4
+    else:
+      final()
+  elif choice==1:
     stake=tb+bet+cb
     tb=stake
     print("Total Stake is: "+str(stake))
     os.system('clear')
     if count==1:
       fcard()
-      next()
+      next1()
     elif count==2:
       rcard()
-      next()
+      next1()
     elif count==3:
       tcard()
-      next()
+      next1()
       count=4
     else:
       final()
@@ -269,47 +356,226 @@ def next():
     os.system('clear')
     if count==1:
       fcard()
-      next()
+      next1()
     elif count==2:
       rcard()
-      next()
+      next1()
     elif count==3:
       tcard()
-      next()
+      next1()
     else:
       final()
   elif choice==2:
-    #stake=stake+bet
-    #print("Total Stake is: ",stake)
+    stake=stake+bet
+    print("Total Stake is: ",stake)
     os.system('clear')
     print("COmputer Wins!!!!")
   else:
     print("Not a valid Entry!!")
-    next()
-def winner():
-  r_flush();
-  if royal_flush==3:
-    s_flush();
-    if straight_flush==3:
-      f_kind();
-    if fkind==3:
-      f_house();
-    if full_house==3:
-      flush();
-    if ssymbol==3:
-      straight();
-    if sequence==3:
-      t_kind();
-    if threekind==3:
-      t_pair();
-    if twopair==3:
-      o_pair();
+    next1()
+def final():
+  global player_hand,kicker,rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk
+  p_sequence=0
+  c_sequence=0
+  print "Player Hand: ",player_hand
+  print "Computer Hand",computer_hand
+  for i in range(0,7):
+    if p_list_flush[i]=='H':
+      p_h_flush.append(p_list_flush[i])
+    elif p_list_flush[i]=='S':
+      p_s_flush.append(p_list_flush[i])
+    elif p_list_flush[i]=='D':
+      p_d_flush.append(p_list_flush[i])
     else:
-      h_card();
-
+      p_c_flush.append(p_list_flush[i])
+  for i in range(0,5):    
+    if c_list_flush[i]=='H':
+      c_h_flush.append(c_list_flush[i])
+    elif c_list_flush[i]=='S':
+      c_s_flush.append(c_list_flush[i])
+    elif p_list_flush[i]=='D':
+      c_d_flush.append(c_list_flush[i])
+    else:
+      c_c_flush.append(c_list_flush[i])
+  if len(p_h_flush)<5 or len(p_s_flush)<5 or len(p_d_flush)<5 or len(p_c_flush)<5 or len(c_h_flush)<5 or len(c_s_flush)<5 or len(c_d_flush)<5 or len(c_c_flush)<5:
+    royal_flush=3
+    straight_flush=3
+    ssymbol=3
+  elif (len(p_h_flush)==5 or len(p_s_flush)==5 or len(p_d_flush)==5 or len(p_c_flush)==5) and (len(c_h_flush)!=5 or len(c_s_flush)!=5 or len(c_d_flush)!=5 or len(c_c_flush)!=5) :
+    ssymbol=1
+  elif (len(c_h_flush)==5 or len(c_s_flush)==5 or len(c_d_flush)==5 or len(c_c_flush)==5) and (len(p_h_flush)!=5 or len(p_s_flush)!=5 or len(p_d_flush)!=5 or len(p_c_flush)!=5):
+    ssymbol=2
+  NumericSort(p_list_straight)
+  NumericSort(c_list_straight)
+      
+  for i in range(0,2):
+    if (int(p_list_straight[i+4]) - int(p_list_straight[i+3]==1))and  (int(p_list_straight[i+3]) - int(p_list_straight[i+2]==1)) and (int(p_list_straight[i+2]) - int(p_list_straight[i+1]==1)) and (int(p_list_straight[i+1]==1) - int(p_list_straight[i]==1)):
+      p_sequence=1
+      
+    if (int(c_list_straight[i+4]) - int(c_list_straight[i+3]==1))and  (int(c_list_straight[i+3]) - int(c_list_straight[i+2]==1)) and (int(c_list_straight[i+2]) - int(c_list_straight[i+1]==1)) and (int(c_list_straight[i+1]==1) - int(c_list_straight[i]==1)):
+      c_sequence=1
+  if p_sequence==1 and c_sequence==0:
+    sequence=1
+  elif p_sequence==0 and c_sequence==1:
+    sequence=2
+  elif p_sequence==1 and c_sequence==1 and max(p_list_straight)>max(c_list_straight):
+    sequence=1
+  elif p_sequence==0 and c_sequence==1 and max(p_list_straight)<max(c_list_straight): 
+    sequence=2
+  else:
+    sequence=3
+  r_flush()
+  print"Total Winning Amount is: $",stake
 def r_flush():
-
+  global player_hand,computer_hand,p,c,ssymbol,sequence
+  if ssymbol==3 or sequence==3:
+    print "Royal Flush is not possible because flush or straight is not possible!"
+  elif ssymbol!=3 and sequence!=3:
+    if sequence==2 and ssymbol==2 and c_list_straight[6]=='A' and c_list_straight[5]=='K' and c_list_straight[4]=='Q' and c_list_straight[3]=='J' and c_list_straight[2]==10:
+      print "Computer has Royal Flush"
+    elif sequence==1 and ssymbol==1 and p_list_straight[6]=='A' and p_list_straight[5]=='K' and p_list_straight[4]=='Q' and p_list_straight[3]=='J' and p_list_straight[2]==10:
+      print "Player has Royal Flush"
+    else:
+      s_flush()
+def s_flush():
+  global player_hand,computer_hand,p,c
+  if ssymbol==3 or sequence==3:
+    print "Straight Flush is not possible because flush or straight is now possible!"
+  elif ssymbol!=3 and sequence!=3:
+    if sequence==1 and ssymbol==1 and max(p_list_straight)>max (c_list_straight):
+      print "Player has straight flush"
+    elif sequence==2 and ssymbol==2 and max(p_list_straight)<max (c_list_straight):
+      print "Computer has straight flush"
+    else:
+      f_kind()
+def f_kind():
+  global player_hand,kicker,rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk
+  for i in range (0,6):
+    rpcount=0
+    rccount=0
+    for j in range (i+1,7):
+      if str(p_list_straight[i])==str(p_list_straight[j]):
+        rpcount=rpcount+1
+        if rpcount==1:
+          p_list_onepair.append(p_list_straight[i])
+          print p_list_onepair
+        elif rpcount==2:
+          p_list_threekind.append(p_list_straight[i])
+          print p_list_threekind
+        elif rpcount==3:
+          p_list_fkind.append(p_list_straight[i])
+          print p_list_fkind
+      if str(c_list_straight[i])==str(c_list_straight[j]):
+        rccount=rccount+1
+        if rccount==1:
+          c_list_onepair.append(c_list_straight[i])
+        elif rccount==2:
+          c_list_threekind.append(c_list_straight[i])
+        elif rccount==3:
+          c_list_fkind.append(c_list_straight[i])
+      
+    kind()
+  if pfk==1 and cfk==0:
+    print "Player has Four of a Kind!\n Hence Player Wins!!!"
+  elif cfk==1 and pfk==0:
+    print "Computer has Four of a Kind!\n Hence Computer Wins!!!"
+  elif pfk==1 and cfk==1:
+    if max(p_list_fourkind)>max(c_list_fourkind):
+      print "Player has Four of a Kind!\n Hence Player Wins!!!"
+    elif max(p_list_fourkind)<max(c_list_fourkind):
+      print "Computer has Four of a Kind!\n Hence Computer Wins!!!"
+    else:
+      kicker()
+  else:
+    f_house()
+def f_house():
+  global player_hand,kicker,rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk
+  if pfh==1 and cfh==0:
+    print "Player has Full House!\n Hence Player Wins!!!"
+  elif cfh==1 and pfh==0:
+    print "Computer has Full House!\n Hence Computer Wins!!!"
+  elif pfh==1 and cfh==1:
+    if max(p_list_threekind)>max(c_list_threekind):
+      print "Player has Full House!\n Hence Player Wins!!!"
+    elif max(p_list_threekind)<max(c_list_threekind):
+      print "Computer has Full House!\n Hence Computer Wins!!!"
+    else:
+      kicker()
+  else:
+    flush()
+def flush():
+  global player_hand,computer_hand,p,c,ssymbol
+  if ssymbol==1:
+    print "Player has a Flush"
+  elif ssymbol==2:
+    print "Computer has a Flush"
+  else:
+    straight()
+def straight():
+  global p_list_straight,c_list_straight
+  if sequence==1:
+    print "Player has a Straight with %s"%max(p_list_straight)
+  elif sequence==2:
+    print "Computer has a Straight with $s"%max(c_list_straight)
+  else:
+    t_kind()
+def t_kind():
+  global rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk,pfh,cfh
+  if ptk==1 and ctk==0:
+    print "Player has Three of a kind!\n Hence Player Wins!!!"
+  elif ctk==1 and ptk==0:
+    print "Computer has Three of a kind!\n Hence Computer Wins!!!"
+  elif ctk==1 and ptk==1:
+    if max(p_list_threekind)>max(c_list_threekind):
+      print "Player has Three of a kind!\n Hence Player Wins!!!"
+    elif ax(p_list_threekind)<max(c_list_threekind):
+      print "Computer has Three of a kind!\n Hence Computer Wins!!!"
+    else:
+      kicker()
+  else:
+    t_pair()
+def t_pair():
+  global rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk,pfh,cfh
+  if pop==2 and cop!=2:
+    print "Player has Two Pair!\n Hence Player Wins!!!"
+  elif cop==2 and pop!=2:
+    print "Computer has Two pair!\n Hence Computer Wins!!!"
+    
+  elif (pop==2 and cop==2) :
+    if max(p_list_twopair)>max(c_list_twopair):
+      print "Player has Two pair!\n Hence Player Wins!!!"
+    elif max(c_list_twopair)>max(p_list_twopair):
+      print "Computer has Two Pair!\n Hence Computer Wins!!!"
+    else:
+      print "Both of them has Two pair"
+      kicker()
+  else:
+    o_pair()
+def o_pair():
+  global rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk,pfh,cfh
+  if pop==1 and cop==0:
+    print "Player has One pair!\n Hence Player Wins!!!"
+  elif cop==1 and pop==0:
+    print "Computer has One Pair!\n Hence Computer Wins!!!"
+  elif (pop==1 and cop==1):
+    if max(p_list_onepair)>max(c_list_onepair):
+      print "Player has One pair!\n Hence Player Wins!!!"
+    elif max(c_list_onepair)>max(p_list_onepair):
+      print "Computer has One Pair!\n Hence Computer Wins!!!"
+    else:
+      kicker()
+  else:
+    kicker()
+def kicker():
+  global p_kicker,c_kicker,stake
+  if p_kicker>c_kicker:
+    print ("Player Wins!!!\nPlayer has a High Card with %s"%str(p_kicker))
+  elif c_kicker>p_kicker:
+    print ("Computer Wins!!!\nComputer has a High Card with %s"%str(c_kicker))
+  else:
+    print "Match is a TIE"
+  #print p_h_flush,p_s_flush,p_d_flush,p_c_flush,c_h_flush,c_s_flush,c_d_flush,c_c_flush
 print("Computer is ready to play.\nLet's get started......\n Here are your cards")
 pcard()
 ccard()
-next()
+next1()
