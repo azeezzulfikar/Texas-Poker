@@ -1,4 +1,3 @@
-
 import random
 import os
 deck=[[2,3,4,5,6,7,8,9,10,11,12,13,14],  #Hearts
@@ -21,7 +20,7 @@ z=13                     #represents number of cards and used to choose random v
 stake=cb+bet
 player_hand =[]          #represents cards of player and cards on the table
 computer_hand = []       #represents cards of computer and cards on the table
-p_kicker=[]
+p_kicker=0
 p_list_flush=[]
 p_list_straight=[]
 p_list_fkind=[]
@@ -42,7 +41,7 @@ rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk,pfh,cfh=0,0,0,0,0,0,0,0,0,0,0,0
 
 
 
-c_kicker=[]
+c_kicker=0
 c_list_flush=[]
 c_list_straight=[]
 c_list_fkind=[]
@@ -144,10 +143,12 @@ def pcard():
          print "X HAS WRONG VALUE!"
      full_card = card_value + card_suite
      p_list_flush.append(card_suite)
-     p_list_straight.append(card_value)
+     p_list_straight.append(int(card_value))
      player_hand.append( full_card )
      del aces[x][y]
+  NumericSort(p_list_straight)
   p_kicker=max(p_list_straight)
+  print p_list_straight,p_kicker
 def ccard():
   global z,c_kicker
   print("\nComputer cards are:\n")
@@ -172,9 +173,11 @@ def ccard():
     full_card = card_value + card_suite
     computer_hand.append( full_card )
     c_list_flush.append(card_suite)
-    c_list_straight.append(card_value)
+    c_list_straight.append(int(card_value))
     del aces[x][y]
   c_kicker=max(c_list_straight)
+  print c_list_straight,c_kicker
+  
 def fcard():
   global z,count
   count=1
@@ -201,8 +204,8 @@ def fcard():
     full_card = card_value + card_suite
     p_list_flush.append(card_suite)
     c_list_flush.append(card_suite)
-    p_list_straight.append(card_value)
-    c_list_straight.append(card_value)
+    p_list_straight.append(int(card_value))
+    c_list_straight.append(int(card_value))
     player_hand.append( full_card )
     computer_hand.append( full_card )
     del aces[x][y]
@@ -231,8 +234,8 @@ def rcard():
     full_card = card_value + card_suite
     p_list_flush.append(card_suite)
     c_list_flush.append(card_suite)
-    p_list_straight.append(card_value)
-    c_list_straight.append(card_value)
+    p_list_straight.append(int(card_value))
+    c_list_straight.append(int(card_value))
     player_hand.append( full_card )
     computer_hand.append( full_card )
     del aces[x][y]
@@ -261,8 +264,8 @@ def tcard():
     full_card = card_value + card_suite
     p_list_flush.append(card_suite)
     c_list_flush.append(card_suite)
-    p_list_straight.append(card_value)
-    c_list_straight.append(card_value)    
+    p_list_straight.append(int(card_value))
+    c_list_straight.append(int(card_value))    
     player_hand.append( full_card )
     computer_hand.append( full_card )
     del aces[x][y]
@@ -272,7 +275,7 @@ def NumericSort(alist):
 def kind():
   global rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk,pfh,cfh
   if len(p_list_onepair)!=0:
-    if len(p_list_threekind)!=0:
+    if len(p_list_threekind)==1:
       pfh=1
       p_list_fullhouse.append(p_list_threekind)
       p_list_fullhouse.append(p_list_onepair)
@@ -282,18 +285,19 @@ def kind():
     else:
       pop=1
   elif len(p_list_threekind)!=0:
-    if len(p_list_onepair)!=0:
-      pfh=1
-      p_list_fullhouse.append(p_list_threekind)
-      p_list_fullhouse.append(p_list_onepair)
-    else:
-      ptk=1
+    if p_list_threekind != p_list_onepair:
+      if len(p_list_onepair)!=0:
+        pfh=1
+        p_list_fullhouse.append(p_list_threekind)
+        p_list_fullhouse.append(p_list_onepair)
+      else:
+        ptk=1
   elif len(p_list_fkind)!=0:
     pfk=1
     
     
   if len(c_list_onepair)!=0:
-    if len(c_list_threekind)!=0:
+    if len(c_list_threekind)==1:
       cfh=1
       c_list_fullhouse.append(c_list_onepair)
       c_list_fullhouse.append(c_list_threekind)
@@ -569,10 +573,13 @@ def o_pair():
 def kicker():
   global p_kicker,c_kicker,stake
   if p_kicker>c_kicker:
+    print p_kicker,c_kicker
     print ("Player Wins!!!\nPlayer has a High Card with %s"%str(p_kicker))
   elif c_kicker>p_kicker:
+    print p_kicker,c_kicker
     print ("Computer Wins!!!\nComputer has a High Card with %s"%str(c_kicker))
   else:
+    print p_kicker,c_kicker
     print "Match is a TIE"
   #print p_h_flush,p_s_flush,p_d_flush,p_c_flush,c_h_flush,c_s_flush,c_d_flush,c_c_flush
 print("Computer is ready to play.\nLet's get started......\n Here are your cards")
