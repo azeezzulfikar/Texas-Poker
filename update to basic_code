@@ -402,7 +402,7 @@ def final():
       c_d_flush.append(c_list_flush[i])
     else:
       c_c_flush.append(c_list_flush[i])
-  if len(p_h_flush)<5 and len(p_s_flush)<5 or len(p_d_flush)<5 and len(p_c_flush)<5 or len(c_h_flush)<5 or len(c_s_flush)<5 or len(c_d_flush)<5 or len(c_c_flush)<5:
+  if len(p_h_flush)<5 and len(p_s_flush)<5 and len(p_d_flush)<5 and len(p_c_flush)<5 and len(c_h_flush)<5 and len(c_s_flush)<5 and len(c_d_flush)<5 and len(c_c_flush)<5:
     royal_flush=3
     straight_flush=3
     ssymbol=3
