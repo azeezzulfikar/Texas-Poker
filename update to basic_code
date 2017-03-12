@@ -5,6 +5,7 @@ deck=[[2,3,4,5,6,7,8,9,10,11,12,13,14],  #Hearts
       [2,3,4,5,6,7,8,9,10,11,12,13,14],  #Diamonds
       [2,3,4,5,6,7,8,9,10,11,12,13,14]]  #Spades
 
+
 aces=deck
 
 print("Welcome To Texas Hold'em Poker.\n\nLet's discuss about basic rules in this game.\n1.As there are only two players, small blind and big blind are changed between players alternatively with the game.\n2.Only positive and valid bet is accepted.\n3.You will be asked to enter the amount to play and it will act as amount for big blind.\n\nNotice:Small blind is always half of big blind.\n\nIf your ready to play \n")
@@ -146,7 +147,6 @@ def pcard():
      p_list_straight.append(int(card_value))
      player_hand.append( full_card )
      del aces[x][y]
-  NumericSort(p_list_straight)
   p_kicker=max(p_list_straight)
   print p_list_straight,p_kicker
 def ccard():
@@ -177,7 +177,6 @@ def ccard():
     del aces[x][y]
   c_kicker=max(c_list_straight)
   print c_list_straight,c_kicker
-  
 def fcard():
   global z,count
   count=1
@@ -240,7 +239,7 @@ def rcard():
     computer_hand.append( full_card )
     del aces[x][y]
 def tcard():
-  global z,count
+  global z,count,p_list_straight,c_list_straight
   count=count+1
   print("\nThe Turn is:\n")
   for j in range(0,1):
@@ -269,9 +268,10 @@ def tcard():
     player_hand.append( full_card )
     computer_hand.append( full_card )
     del aces[x][y]
-def NumericSort(alist): 
-    alist=[int(x) for x in alist]
-    alist.sort()
+  p_list_straight=[int(x) for x in p_list_straight]
+  p_list_straight.sort()
+  c_list_straight=[int(x) for x in c_list_straight]
+  c_list_straight.sort()
 def kind():
   global rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk,pfh,cfh
   if len(p_list_onepair)!=0:
@@ -290,8 +290,8 @@ def kind():
         pfh=1
         p_list_fullhouse.append(p_list_threekind)
         p_list_fullhouse.append(p_list_onepair)
-      else:
-        ptk=1
+    else:
+      ptk=1
   elif len(p_list_fkind)!=0:
     pfk=1
     
@@ -307,10 +307,11 @@ def kind():
     else:
       cop=1
   elif len(c_list_threekind)!=0:
-    if len(c_list_onepair)!=0:
-      c_list_fullhouse.append(c_list_onepair)
-      c_list_fullhouse.append(c_list_threekind)
-      cfh=1
+    if c_list_threekind != c_list_onepair:
+      if len(c_list_onepair)!=0:
+        c_list_fullhouse.append(c_list_onepair)
+        c_list_fullhouse.append(c_list_threekind)
+        cfh=1
     else:
       ctk=1
   elif len(c_list_fkind)!=0:
@@ -378,7 +379,7 @@ def next1():
     print("Not a valid Entry!!")
     next1()
 def final():
-  global player_hand,kicker,rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk
+  global player_hand,kicker,rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk,ssymbol,sequence,p_list_straight,c_list_straight
   p_sequence=0
   c_sequence=0
   print "Player Hand: ",player_hand
@@ -392,7 +393,7 @@ def final():
       p_d_flush.append(p_list_flush[i])
     else:
       p_c_flush.append(p_list_flush[i])
-  for i in range(0,5):    
+  for i in range(0,7):    
     if c_list_flush[i]=='H':
       c_h_flush.append(c_list_flush[i])
     elif c_list_flush[i]=='S':
@@ -401,7 +402,7 @@ def final():
       c_d_flush.append(c_list_flush[i])
     else:
       c_c_flush.append(c_list_flush[i])
-  if len(p_h_flush)<5 or len(p_s_flush)<5 or len(p_d_flush)<5 or len(p_c_flush)<5 or len(c_h_flush)<5 or len(c_s_flush)<5 or len(c_d_flush)<5 or len(c_c_flush)<5:
+  if len(p_h_flush)<5 and len(p_s_flush)<5 or len(p_d_flush)<5 and len(p_c_flush)<5 or len(c_h_flush)<5 or len(c_s_flush)<5 or len(c_d_flush)<5 or len(c_c_flush)<5:
     royal_flush=3
     straight_flush=3
     ssymbol=3
@@ -409,14 +410,13 @@ def final():
     ssymbol=1
   elif (len(c_h_flush)==5 or len(c_s_flush)==5 or len(c_d_flush)==5 or len(c_c_flush)==5) and (len(p_h_flush)!=5 or len(p_s_flush)!=5 or len(p_d_flush)!=5 or len(p_c_flush)!=5):
     ssymbol=2
-  NumericSort(p_list_straight)
-  NumericSort(c_list_straight)
+  print p_list_straight,c_list_straight
       
-  for i in range(0,2):
-    if (int(p_list_straight[i+4]) - int(p_list_straight[i+3]==1))and  (int(p_list_straight[i+3]) - int(p_list_straight[i+2]==1)) and (int(p_list_straight[i+2]) - int(p_list_straight[i+1]==1)) and (int(p_list_straight[i+1]==1) - int(p_list_straight[i]==1)):
+  for i in range(0,3):
+    if (int(p_list_straight[i+4]) - int(p_list_straight[i+3])==1)and  (int(p_list_straight[i+3]) - int(p_list_straight[i+2])==1) and (int(p_list_straight[i+2]) - int(p_list_straight[i+1])==1) and (int(p_list_straight[i+1]) - int(p_list_straight[i])==1):
       p_sequence=1
       
-    if (int(c_list_straight[i+4]) - int(c_list_straight[i+3]==1))and  (int(c_list_straight[i+3]) - int(c_list_straight[i+2]==1)) and (int(c_list_straight[i+2]) - int(c_list_straight[i+1]==1)) and (int(c_list_straight[i+1]==1) - int(c_list_straight[i]==1)):
+    if (int(c_list_straight[i+4]) - int(c_list_straight[i+3])==1)and  (int(c_list_straight[i+3]) - int(c_list_straight[i+2])==1) and (int(c_list_straight[i+2]) - int(c_list_straight[i+1])==1) and (int(c_list_straight[i+1]) - int(c_list_straight[i])==1):
       c_sequence=1
   if p_sequence==1 and c_sequence==0:
     sequence=1
@@ -424,36 +424,32 @@ def final():
     sequence=2
   elif p_sequence==1 and c_sequence==1 and max(p_list_straight)>max(c_list_straight):
     sequence=1
-  elif p_sequence==0 and c_sequence==1 and max(p_list_straight)<max(c_list_straight): 
+  elif p_sequence==1 and c_sequence==1 and max(p_list_straight)<max(c_list_straight): 
     sequence=2
   else:
     sequence=3
   r_flush()
   print"Total Winning Amount is: $",stake
 def r_flush():
-  global player_hand,computer_hand,p,c,ssymbol,sequence
-  if ssymbol==3 or sequence==3:
-    print "Royal Flush is not possible because flush or straight is not possible!"
-  elif ssymbol!=3 and sequence!=3:
-    if sequence==2 and ssymbol==2 and c_list_straight[6]=='A' and c_list_straight[5]=='K' and c_list_straight[4]=='Q' and c_list_straight[3]=='J' and c_list_straight[2]==10:
+  global player_hand,computer_hand,ssymbol,sequence
+  if ssymbol!=3 and sequence!=3:
+    if sequence==2 and ssymbol==2 and c_list_straight[6]==14 and c_list_straight[5]==13 and c_list_straight[4]==12 and c_list_straight[3]==11 and c_list_straight[2]==10:
       print "Computer has Royal Flush"
-    elif sequence==1 and ssymbol==1 and p_list_straight[6]=='A' and p_list_straight[5]=='K' and p_list_straight[4]=='Q' and p_list_straight[3]=='J' and p_list_straight[2]==10:
+    elif sequence==1 and ssymbol==1 and p_list_straight[6]==14 and p_list_straight[5]==13 and p_list_straight[4]==12 and p_list_straight[3]==11 and p_list_straight[2]==10:
       print "Player has Royal Flush"
-    else:
-      s_flush()
+  else:
+    s_flush()
 def s_flush():
-  global player_hand,computer_hand,p,c
-  if ssymbol==3 or sequence==3:
-    print "Straight Flush is not possible because flush or straight is now possible!"
-  elif ssymbol!=3 and sequence!=3:
+  global player_hand,computer_hand,p,c,ssymbol,sequence
+  if ssymbol!=3 and sequence!=3:
     if sequence==1 and ssymbol==1 and max(p_list_straight)>max (c_list_straight):
       print "Player has straight flush"
     elif sequence==2 and ssymbol==2 and max(p_list_straight)<max (c_list_straight):
       print "Computer has straight flush"
-    else:
-      f_kind()
+  else:
+    f_kind()
 def f_kind():
-  global player_hand,kicker,rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk
+  global player_hand,kicker,rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk,p_list_onepair,c_list_onepair,p_list_threekind,p_list_fkind,c_list_threekind,c_list_fkind
   for i in range (0,6):
     rpcount=0
     rccount=0
@@ -477,23 +473,23 @@ def f_kind():
           c_list_threekind.append(c_list_straight[i])
         elif rccount==3:
           c_list_fkind.append(c_list_straight[i])
-      
     kind()
   if pfk==1 and cfk==0:
     print "Player has Four of a Kind!\n Hence Player Wins!!!"
   elif cfk==1 and pfk==0:
     print "Computer has Four of a Kind!\n Hence Computer Wins!!!"
   elif pfk==1 and cfk==1:
-    if max(p_list_fourkind)>max(c_list_fourkind):
+    if max(p_list_fkind)>max(c_list_fkind):
       print "Player has Four of a Kind!\n Hence Player Wins!!!"
-    elif max(p_list_fourkind)<max(c_list_fourkind):
+    elif max(p_list_fkind)<max(c_list_fkind):
       print "Computer has Four of a Kind!\n Hence Computer Wins!!!"
     else:
+      print "Both of them has Four of a Kind."
       kicker()
   else:
     f_house()
 def f_house():
-  global player_hand,kicker,rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk
+  global player_hand,kicker,rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,p_list_onepair,c_list_onepair,p_list_threekind,p_list_fkind,c_list_threekind,c_list_fkind
   if pfh==1 and cfh==0:
     print "Player has Full House!\n Hence Player Wins!!!"
   elif cfh==1 and pfh==0:
@@ -504,6 +500,7 @@ def f_house():
     elif max(p_list_threekind)<max(c_list_threekind):
       print "Computer has Full House!\n Hence Computer Wins!!!"
     else:
+      print "Both of them has Full House."
       kicker()
   else:
     flush()
@@ -516,15 +513,15 @@ def flush():
   else:
     straight()
 def straight():
-  global p_list_straight,c_list_straight
+  global p_list_straight,c_list_straight,sequence
   if sequence==1:
     print "Player has a Straight with %s"%max(p_list_straight)
   elif sequence==2:
-    print "Computer has a Straight with $s"%max(c_list_straight)
+    print "Computer has a Straight with %s"%max(c_list_straight)
   else:
     t_kind()
 def t_kind():
-  global rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk,pfh,cfh
+  global rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk,pfh,cfh,p_list_onepair,c_list_onepair,p_list_threekind,p_list_fkind,c_list_threekind,c_list_fkind
   if ptk==1 and ctk==0:
     print "Player has Three of a kind!\n Hence Player Wins!!!"
   elif ctk==1 and ptk==0:
@@ -535,11 +532,12 @@ def t_kind():
     elif ax(p_list_threekind)<max(c_list_threekind):
       print "Computer has Three of a kind!\n Hence Computer Wins!!!"
     else:
+      print "Both of them has three of a kind."
       kicker()
   else:
     t_pair()
 def t_pair():
-  global rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk,pfh,cfh
+  global rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk,pfh,cfh,p_list_onepair,c_list_onepair,p_list_threekind,p_list_fkind,c_list_threekind,c_list_fkind
   if pop==2 and cop!=2:
     print "Player has Two Pair!\n Hence Player Wins!!!"
   elif cop==2 and pop!=2:
@@ -556,7 +554,7 @@ def t_pair():
   else:
     o_pair()
 def o_pair():
-  global rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk,pfh,cfh
+  global rpcount,rccount,rpc,rcc,pop,ptk,pfk,cop,ctk,cfk,pfh,cfh,p_list_onepair,c_list_onepair,p_list_threekind,p_list_fkind,c_list_threekind,c_list_fkind
   if pop==1 and cop==0:
     print "Player has One pair!\n Hence Player Wins!!!"
   elif cop==1 and pop==0:
@@ -567,6 +565,7 @@ def o_pair():
     elif max(c_list_onepair)>max(p_list_onepair):
       print "Computer has One Pair!\n Hence Computer Wins!!!"
     else:
+      print "Both of them has a pair."
       kicker()
   else:
     kicker()
@@ -574,14 +573,13 @@ def kicker():
   global p_kicker,c_kicker,stake
   if p_kicker>c_kicker:
     print p_kicker,c_kicker
-    print ("Player Wins!!!\nPlayer has a High Card with %s"%str(p_kicker))
+    print ("Player Wins!!!\nBecause Player has a High Card with %s"%str(p_kicker))
   elif c_kicker>p_kicker:
     print p_kicker,c_kicker
-    print ("Computer Wins!!!\nComputer has a High Card with %s"%str(c_kicker))
+    print ("Computer Wins!!!\nBecause Computer has a High Card with %s"%str(c_kicker))
   else:
     print p_kicker,c_kicker
     print "Match is a TIE"
-  #print p_h_flush,p_s_flush,p_d_flush,p_c_flush,c_h_flush,c_s_flush,c_d_flush,c_c_flush
 print("Computer is ready to play.\nLet's get started......\n Here are your cards")
 pcard()
 ccard()
